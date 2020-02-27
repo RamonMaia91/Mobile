@@ -2,6 +2,10 @@
 //Variable array that will be receiving all the information saved by the user 
 var arraySavedNews = [];
 
+if(localStorage.getItem("arraySavedNews") != null){
+	arraySavedNews = JSON.parse(localStorage.getItem("arraySavedNews"));
+}
+
 //Variables that will receive the API's separated by each subject as required
 
 $(document).ready(function() {
@@ -17,6 +21,13 @@ $(document).ready(function() {
 	callRestApiNews('business', urlBusiness);
 	callRestApiNews('financial', urlFinancial);
 	setDataTable(arraySavedNews, 'saved');
+	
+	// clear news
+	$("#clear").on("click", function(e) {
+		localStorage.clear();
+		arraySavedNews = [];
+		refreshSavedNews();
+	});
 		
 	// show or hide zone of the news - This one shows the home screen
 	$(".back").on("click", function(e) {
@@ -107,6 +118,8 @@ $(document).ready(function() {
 					arraySavedNews.push([dtPublished, news, ""]);
 				}
 		});	
+		
+		localStorage.setItem("arraySavedNews", JSON.stringify(arraySavedNews));
 	});
 });
 
